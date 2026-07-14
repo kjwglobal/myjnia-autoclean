@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Myjnia AutoClean</title>
+    <script>
+      if (window.location.protocol === "file:") {
+        const page = window.location.pathname.split("/").pop();
+        const route = page && page !== "index.html" ? page : "";
+        window.location.replace(`http://127.0.0.1:8000/${route}${window.location.hash || ""}`);
+      }
+    </script>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Myjnia AutoClean">
+        <span class="brand-mark">AC</span>
+        <span>
+          <strong data-setting="business_name">Myjnia AutoClean</strong>
+          <small>rezerwacje i plan myjni</small>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Glowne">
+        <a href="/#uslugi" data-nav-page="home">Uslugi</a>
+        <a href="/konto.html" data-nav-page="account">Konto</a>
+        <a href="/rezerwacja.html" id="booking-nav-link" data-nav-page="booking">Rezerwacja</a>
+        <a href="/panel-klienta.html" id="panel-nav-link" data-nav-page="client-panel">Panel</a>
+        <a href="/#kontakt" data-nav-page="home">Kontakt</a>
+      </nav>
+      <div class="auth-chip" id="auth-chip">
+        <span>Niezalogowany</span>
+        <a href="/konto.html">Logowanie</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="start">
+        <div class="hero-media" aria-hidden="true"></div>
+        <div class="hero-content">
+          <div class="hero-copy">
+            <p class="eyebrow">Warszawa · mycie · detailing · wosk</p>
+            <h1>Myjnia AutoClean</h1>
+            <p class="lead">
+              Rezerwacja terminu, cennik i plan pracy w jednym miejscu.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" id="hero-booking-action" href="/rezerwacja.html">Umow wizyte</a>
+              <a class="button ghost" id="hero-panel-action" href="/konto.html">Panel</a>
+            </div>
+          </div>
+
+          <aside class="quick-panel" aria-label="Szybki podglad">
+            <div>
+              <span class="panel-label">Dzisiaj</span>
+              <strong id="today-count">0</strong>
+            </div>
+            <div>
+              <span class="panel-label">Najblizszy termin</span>
+              <strong id="next-slot">--</strong>
+            </div>
+            <div>
+              <span class="panel-label">Kontakt</span>
+              <strong data-setting="business_phone">+48 123 456 789</strong>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section" id="uslugi">
+        <div class="section-head">
+          <p class="eyebrow">Cennik</p>
+          <h2>Pakiety mycia</h2>
+        </div>
+        <div class="service-grid" id="services-list" aria-live="polite"></div>
+      </section>
+
+      <section class="contact-band" id="kontakt">
+        <div>
+          <p class="eyebrow">Kontakt</p>
+          <h2 data-setting="business_name">Myjnia AutoClean</h2>
+          <p data-setting="business_address">ul. Przykladowa 1, 00-001 Warszawa</p>
+          <p data-setting="opening_hours">Pon-Pt 08:00-18:00; Sob 09:00-15:00</p>
+        </div>
+        <form class="contact-form" id="contact-form">
+          <label>
+            Imie
+            <input name="name" required />
+          </label>
+          <label>
+            E-mail
+            <input name="email" type="email" required />
+          </label>
+          <label>
+            Wiadomosc
+            <textarea name="message" rows="4" required></textarea>
+          </label>
+          <button class="button dark" type="submit">Wyslij</button>
+          <p class="form-status" id="contact-status" role="status"></p>
+        </form>
+      </section>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

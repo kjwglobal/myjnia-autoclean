@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Myjnia AutoClean</title>
+    <script>
+      if (window.location.protocol === "file:") {
+        const page = window.location.pathname.split("/").pop();
+        const route = page && page !== "index.html" ? page : "";
+        window.location.replace(`http://127.0.0.1:8000/${route}${window.location.hash || ""}`);
+      }
+    </script>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Myjnia AutoClean">
+        <span class="brand-mark">AC</span>
+        <span>
+          <strong data-setting="business_name">Myjnia AutoClean</strong>
+          <small>rezerwacje i plan myjni</small>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Glowne">
+        <a href="/#uslugi" data-nav-page="home">Uslugi</a>
+        <a href="/konto.html" data-nav-page="account">Konto</a>
+        <a href="/rezerwacja.html" id="booking-nav-link" data-nav-page="booking">Rezerwacja</a>
+        <a href="/panel-klienta.html" id="panel-nav-link" data-nav-page="client-panel">Panel</a>
+        <a href="/#kontakt" data-nav-page="home">Kontakt</a>
+      </nav>
+      <div class="auth-chip" id="auth-chip">
+        <span>Niezalogowany</span>
+        <a href="/konto.html">Logowanie</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="booking-section">
+        <div class="booking-layout">
+          <section class="client-workspace hidden" id="client-workspace" aria-label="Panel klienta">
+            <div class="section-head compact">
+              <p class="eyebrow">Klient</p>
+              <h2>Moje konto</h2>
+            </div>
+            <div class="panel-tabs" role="tablist" aria-label="Panel klienta">
+              <button class="panel-tab" data-panel-scope="client" data-panel-tab="visits" type="button">
+                Wizyty
+              </button>
+              <button class="panel-tab" data-panel-scope="client" data-panel-tab="profile" type="button">
+                Profil
+              </button>
+              <button class="panel-tab" data-panel-scope="client" data-panel-tab="vehicles" type="button">
+                Auta
+              </button>
+              <button class="panel-tab" data-panel-scope="client" data-panel-tab="notifications" type="button">
+                Powiadomienia
+              </button>
+            </div>
+            <div class="client-grid">
+              <form
+                class="client-card hidden"
+                data-panel-scope="client"
+                data-panel-section="profile"
+                id="client-profile-form"
+              >
+                <header>
+                  <span class="panel-label">Profil</span>
+                  <strong>Dane kontaktowe</strong>
+                </header>
+                <label>
+                  Imie i nazwisko
+                  <input name="name" autocomplete="name" required />
+                </label>
+                <label>
+                  Telefon
+                  <input name="phone" autocomplete="tel" required />
+                </label>
+                <label>
+                  E-mail
+                  <input name="email" type="email" readonly />
+                </label>
+                <label class="check-row">
+                  <input name="marketing_consent" type="checkbox" />
+                  <span>Zgoda na wiadomosci o promocjach</span>
+                </label>
+                <button class="button dark" type="submit">Zapisz profil</button>
+                <p class="form-status" id="client-profile-status" role="status"></p>
+              </form>
+
+              <article class="client-card hidden" data-panel-scope="client" data-panel-section="vehicles">
+                <header>
+                  <span class="panel-label">Auta</span>
+                  <strong>Moje pojazdy</strong>
+                </header>
+                <div class="vehicle-list" id="client-vehicles-list"></div>
+                <form class="vehicle-form" id="client-vehicle-form">
+                  <div class="form-grid">
+                    <label>
+                      Marka
+                      <input name="brand" autocomplete="off" />
+                    </label>
+                    <label>
+                      Model
+                      <input name="model" autocomplete="off" />
+                    </label>
+                    <label>
+                      Rejestracja
+                      <input name="registration_number" autocomplete="off" />
+                    </label>
+                    <label>
+                      Kolor
+                      <input name="color" autocomplete="off" />
+                    </label>
+                    <label>
+                      Rozmiar
+                      <select name="vehicle_size">
+                        <option value="small">Male</option>
+                        <option value="standard" selected>Standard</option>
+                        <option value="suv">SUV</option>
+                        <option value="van">Van</option>
+                      </select>
+                    </label>
+                  </div>
+                  <button class="button dark" type="submit">Dodaj auto</button>
+                  <p class="form-status" id="client-vehicle-status" role="status"></p>
+                </form>
+              </article>
+
+              <article
+                class="client-card client-notifications-card hidden"
+                data-panel-scope="client"
+                data-panel-section="notifications"
+              >
+                <header class="notifications-head">
+                  <div>
+                    <span class="panel-label">Powiadomienia</span>
+                    <strong>Wiadomosci z myjni</strong>
+                  </div>
+                  <button class="button dark" id="mark-all-notifications" type="button">
+                    Oznacz przeczytane
+                  </button>
+                </header>
+                <div class="notification-summary" id="notification-summary"></div>
+                <div class="notification-list" id="client-notifications-list"></div>
+                <p class="form-status" id="client-notification-status" role="status"></p>
+              </article>
+            </div>
+          </section>
+
+          <aside class="side-panel" data-panel-scope="client" data-panel-section="visits" id="panel">
+            <div class="section-head compact">
+              <p class="eyebrow" id="panel-eyebrow">Klient</p>
+              <h2 id="panel-title">Moje wizyty</h2>
+            </div>
+            <p class="form-status" id="owner-booking-status" role="status"></p>
+            <div class="timeline" id="bookings-list" aria-live="polite"></div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Myjnia AutoClean</title>
+    <script>
+      if (window.location.protocol === "file:") {
+        const page = window.location.pathname.split("/").pop();
+        const route = page && page !== "index.html" ? page : "";
+        window.location.replace(`http://127.0.0.1:8000/${route}${window.location.hash || ""}`);
+      }
+    </script>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Myjnia AutoClean">
+        <span class="brand-mark">AC</span>
+        <span>
+          <strong data-setting="business_name">Myjnia AutoClean</strong>
+          <small>rezerwacje i plan myjni</small>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Glowne">
+        <a href="/#uslugi" data-nav-page="home">Uslugi</a>
+        <a href="/konto.html" data-nav-page="account">Konto</a>
+        <a href="/rezerwacja.html" id="booking-nav-link" data-nav-page="booking">Rezerwacja</a>
+        <a href="/panel-klienta.html" id="panel-nav-link" data-nav-page="client-panel">Panel</a>
+        <a href="/#kontakt" data-nav-page="home">Kontakt</a>
+      </nav>
+      <div class="auth-chip" id="auth-chip">
+        <span>Niezalogowany</span>
+        <a href="/konto.html">Logowanie</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="auth-section" id="konto">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Konto</p>
+            <h2>Logowanie</h2>
+          </div>
+        </div>
+
+        <div class="account-card hidden" id="account-card">
+          <div>
+            <span class="panel-label">Zalogowano</span>
+            <strong id="account-name">--</strong>
+            <p id="account-role">--</p>
+          </div>
+          <button class="button dark" id="logout-button" type="button">Wyloguj</button>
+        </div>
+
+        <div class="auth-layout" id="auth-forms">
+          <form class="auth-card" id="login-form">
+            <div class="section-head compact">
+              <p class="eyebrow">Dostep</p>
+              <h3>Wejscie</h3>
+            </div>
+            <label>
+              E-mail
+              <input name="email" type="email" autocomplete="email" required />
+            </label>
+            <label>
+              Haslo
+              <input name="password" type="password" autocomplete="current-password" required />
+            </label>
+            <button class="button primary" type="submit">Zaloguj</button>
+            <div class="social-login">
+              <button class="button social" data-social-provider="Google" type="button">Google</button>
+              <button class="button social" data-social-provider="Apple ID" type="button">Apple ID</button>
+            </div>
+            <p class="form-status" id="login-status" role="status"></p>
+          </form>
+
+          <form class="auth-card" id="register-form">
+            <div class="section-head compact">
+              <p class="eyebrow">Klient</p>
+              <h3>Nowe konto</h3>
+            </div>
+            <label>
+              Imie i nazwisko
+              <input name="name" autocomplete="name" required />
+            </label>
+            <label>
+              Telefon
+              <input name="phone" autocomplete="tel" required />
+            </label>
+            <label>
+              E-mail
+              <input name="email" type="email" autocomplete="email" required />
+            </label>
+            <label>
+              Haslo
+              <input name="password" type="password" autocomplete="new-password" required />
+            </label>
+            <button class="button dark" type="submit">Utworz konto</button>
+            <p class="form-status" id="register-status" role="status"></p>
+          </form>
+
+          <form class="auth-card reset-card" id="reset-request-form">
+            <div class="section-head compact">
+              <p class="eyebrow">Haslo</p>
+              <h3>Reset dostepu</h3>
+            </div>
+            <label>
+              E-mail konta
+              <input name="email" type="email" autocomplete="email" required />
+            </label>
+            <button class="button dark" type="submit">Wygeneruj kod</button>
+            <p class="form-status" id="reset-request-status" role="status"></p>
+          </form>
+
+          <form class="auth-card reset-card" id="reset-complete-form">
+            <div class="section-head compact">
+              <p class="eyebrow">Nowe haslo</p>
+              <h3>Ustaw haslo</h3>
+            </div>
+            <label>
+              E-mail konta
+              <input name="email" type="email" autocomplete="email" required />
+            </label>
+            <label>
+              Kod resetu
+              <input name="reset_token" autocomplete="one-time-code" required />
+            </label>
+            <label>
+              Nowe haslo
+              <input name="password" type="password" autocomplete="new-password" required />
+            </label>
+            <button class="button primary" type="submit">Zmien haslo</button>
+            <p class="form-status" id="reset-complete-status" role="status"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

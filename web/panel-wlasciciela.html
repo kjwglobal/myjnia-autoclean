@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Myjnia AutoClean</title>
+    <script>
+      if (window.location.protocol === "file:") {
+        const page = window.location.pathname.split("/").pop();
+        const route = page && page !== "index.html" ? page : "";
+        window.location.replace(`http://127.0.0.1:8000/${route}${window.location.hash || ""}`);
+      }
+    </script>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Myjnia AutoClean">
+        <span class="brand-mark">AC</span>
+        <span>
+          <strong data-setting="business_name">Myjnia AutoClean</strong>
+          <small>rezerwacje i plan myjni</small>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Glowne">
+        <a href="/#uslugi" data-nav-page="home">Uslugi</a>
+        <a href="/konto.html" data-nav-page="account">Konto</a>
+        <a href="/rezerwacja.html" id="booking-nav-link" data-nav-page="booking">Rezerwacja</a>
+        <a href="/panel-klienta.html" id="panel-nav-link" data-nav-page="client-panel">Panel</a>
+        <a href="/#kontakt" data-nav-page="home">Kontakt</a>
+      </nav>
+      <div class="auth-chip" id="auth-chip">
+        <span>Niezalogowany</span>
+        <a href="/konto.html">Logowanie</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="booking-section">
+        <div class="booking-layout">
+          <section class="owner-workspace hidden" id="owner-workspace" aria-label="Kokpit wlasciciela">
+            <div class="section-head compact">
+              <p class="eyebrow">Kokpit</p>
+              <h2>Praca myjni</h2>
+            </div>
+            <div class="panel-tabs" role="tablist" aria-label="Panel wlasciciela">
+              <button class="panel-tab" data-panel-scope="owner" data-panel-tab="overview" type="button">
+                Kokpit
+              </button>
+              <button class="panel-tab" data-panel-scope="owner" data-panel-tab="visits" type="button">
+                Wizyty
+              </button>
+              <button class="panel-tab" data-panel-scope="owner" data-panel-tab="calendar" type="button">
+                Kalendarz
+              </button>
+              <button class="panel-tab" data-panel-scope="owner" data-panel-tab="schedule" type="button">
+                Godziny
+              </button>
+              <button class="panel-tab" data-panel-scope="owner" data-panel-tab="pricing" type="button">
+                Cennik
+              </button>
+              <button class="panel-tab" data-panel-scope="owner" data-panel-tab="messages" type="button">
+                Wiadomosci
+              </button>
+            </div>
+            <div class="owner-metrics" data-panel-scope="owner" data-panel-section="overview">
+              <div>
+                <span>Klienci</span>
+                <strong id="owner-customers">0</strong>
+              </div>
+              <div>
+                <span>Ten tydzien</span>
+                <strong id="owner-week-count">0</strong>
+              </div>
+              <div>
+                <span>Wiadomosci</span>
+                <strong id="owner-messages-count">0</strong>
+              </div>
+              <div>
+                <span>Do zaplaty</span>
+                <strong id="owner-pending-payments">0 zl</strong>
+              </div>
+            </div>
+            <div class="owner-grid">
+              <article class="owner-widget" data-panel-scope="owner" data-panel-section="overview">
+                <header>
+                  <span class="panel-label">Najblizsze</span>
+                  <strong>Wizyty</strong>
+                </header>
+                <div class="owner-list" id="owner-next-bookings"></div>
+              </article>
+              <article class="owner-widget hidden" data-panel-scope="owner" data-panel-section="calendar">
+                <header>
+                  <span class="panel-label">Kalendarz</span>
+                  <strong>Plan dnia</strong>
+                </header>
+                <label class="owner-date-label">
+                  Dzien
+                  <input id="owner-plan-date" type="date" />
+                </label>
+                <div class="owner-day-plan" id="owner-day-plan" aria-live="polite"></div>
+              </article>
+              <article
+                class="owner-widget owner-schedule-widget hidden"
+                data-panel-scope="owner"
+                data-panel-section="schedule"
+              >
+                <header>
+                  <span class="panel-label">Ustawienia</span>
+                  <strong>Godziny pracy</strong>
+                </header>
+                <form id="owner-schedule-form">
+                  <label class="station-count-label">
+                    Stanowiska rownolegle
+                    <input name="station_count" type="number" min="1" max="6" step="1" />
+                  </label>
+                  <div class="schedule-list" id="owner-hours-list"></div>
+                  <button class="button dark" type="submit">Zapisz godziny</button>
+                  <p class="form-status" id="owner-schedule-status" role="status"></p>
+                </form>
+                <form class="closure-form" id="owner-closure-form">
+                  <div class="pricing-grid">
+                    <label>
+                      Dzien wolny
+                      <input name="date" type="date" required />
+                    </label>
+                    <label>
+                      Powod
+                      <input name="reason" placeholder="np. swieto, urlop" />
+                    </label>
+                  </div>
+                  <button class="button dark" type="submit">Dodaj dzien wolny</button>
+                  <p class="form-status" id="owner-closure-status" role="status"></p>
+                </form>
+                <div class="closure-list" id="owner-closures-list"></div>
+              </article>
+              <article class="owner-widget hidden" data-panel-scope="owner" data-panel-section="messages">
+                <header>
+                  <span class="panel-label">Kontakt</span>
+                  <strong>Ostatnie wiadomosci</strong>
+                </header>
+                <div class="owner-list" id="owner-messages-list"></div>
+              </article>
+              <article
+                class="owner-widget owner-pricing-widget hidden"
+                data-panel-scope="owner"
+                data-panel-section="pricing"
+              >
+                <header>
+                  <span class="panel-label">Cennik</span>
+                  <strong>Uslugi i dodatki</strong>
+                </header>
+                <div class="pricing-list" id="owner-pricing-list"></div>
+                <p class="form-status" id="pricing-status" role="status"></p>
+              </article>
+            </div>
+          </section>
+
+          <aside class="side-panel hidden" data-panel-scope="owner" data-panel-section="visits" id="panel">
+            <div class="section-head compact">
+              <p class="eyebrow" id="panel-eyebrow">Wlasciciel</p>
+              <h2 id="panel-title">Wszystkie wizyty</h2>
+            </div>
+            <div class="stats" id="owner-stats">
+              <div>
+                <span>Nowe</span>
+                <strong id="stat-new">0</strong>
+              </div>
+              <div>
+                <span>Potwierdzone</span>
+                <strong id="stat-confirmed">0</strong>
+              </div>
+              <div>
+                <span>Przychod</span>
+                <strong id="stat-revenue">0 zl</strong>
+              </div>
+            </div>
+            <p class="form-status" id="owner-booking-status" role="status"></p>
+            <div class="timeline" id="bookings-list" aria-live="polite"></div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

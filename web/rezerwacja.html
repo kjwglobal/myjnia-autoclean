@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Myjnia AutoClean</title>
+    <script>
+      if (window.location.protocol === "file:") {
+        const page = window.location.pathname.split("/").pop();
+        const route = page && page !== "index.html" ? page : "";
+        window.location.replace(`http://127.0.0.1:8000/${route}${window.location.hash || ""}`);
+      }
+    </script>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Myjnia AutoClean">
+        <span class="brand-mark">AC</span>
+        <span>
+          <strong data-setting="business_name">Myjnia AutoClean</strong>
+          <small>rezerwacje i plan myjni</small>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Glowne">
+        <a href="/#uslugi" data-nav-page="home">Uslugi</a>
+        <a href="/konto.html" data-nav-page="account">Konto</a>
+        <a href="/rezerwacja.html" id="booking-nav-link" data-nav-page="booking">Rezerwacja</a>
+        <a href="/panel-klienta.html" id="panel-nav-link" data-nav-page="client-panel">Panel</a>
+        <a href="/#kontakt" data-nav-page="home">Kontakt</a>
+      </nav>
+      <div class="auth-chip" id="auth-chip">
+        <span>Niezalogowany</span>
+        <a href="/konto.html">Logowanie</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="booking-section">
+        <div class="booking-layout">
+          <form class="booking-form" id="booking-form">
+            <div class="section-head compact">
+              <p class="eyebrow">Rezerwacja</p>
+              <h2>Nowy termin</h2>
+            </div>
+            <p class="auth-note" id="booking-auth-note"></p>
+
+            <fieldset>
+              <legend>Usluga</legend>
+              <div class="choice-grid" id="service-choices"></div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Dodatki</legend>
+              <div class="addon-list" id="addon-choices"></div>
+            </fieldset>
+
+            <div class="calendar-picker">
+              <div class="calendar-head">
+                <label>
+                  Dzien wizyty
+                  <input id="booking-date" name="booking_date" type="date" required />
+                </label>
+                <div class="date-stepper" aria-label="Zmiana dnia">
+                  <button class="icon-button" type="button" data-date-step="-1" aria-label="Poprzedni dzien">&lt;</button>
+                  <button class="icon-button" type="button" data-date-step="1" aria-label="Nastepny dzien">&gt;</button>
+                </div>
+              </div>
+              <input id="starts-at" name="starts_at" type="hidden" />
+              <div class="slot-summary" id="slot-summary" aria-live="polite">--</div>
+              <div class="slot-grid" id="slot-grid" aria-live="polite"></div>
+            </div>
+
+            <div class="form-grid">
+              <label>
+                Rozmiar auta
+                <select name="vehicle_size">
+                  <option value="small">Male</option>
+                  <option value="standard" selected>Standard</option>
+                  <option value="suv">SUV</option>
+                  <option value="van">Van</option>
+                </select>
+              </label>
+              <label>
+                Imie i nazwisko
+                <input name="name" autocomplete="name" required />
+              </label>
+              <label>
+                Telefon
+                <input name="phone" autocomplete="tel" required />
+              </label>
+              <label>
+                E-mail
+                <input name="email" type="email" autocomplete="email" required />
+              </label>
+              <label>
+                Marka
+                <input name="brand" autocomplete="off" />
+              </label>
+              <label>
+                Model
+                <input name="model" autocomplete="off" />
+              </label>
+              <label>
+                Rejestracja
+                <input name="registration_number" autocomplete="off" />
+              </label>
+            </div>
+
+            <label>
+              Uwagi
+              <textarea name="notes" rows="3"></textarea>
+            </label>
+
+            <label class="check-row">
+              <input name="marketing_consent" type="checkbox" />
+              <span>Zgoda na wiadomosci o promocjach</span>
+            </label>
+
+            <div class="booking-footer">
+              <div class="summary" aria-live="polite">
+                <span>Czas: <strong id="summary-duration">0 min</strong></span>
+                <span>Razem: <strong id="summary-price">0 zl</strong></span>
+              </div>
+              <button class="button primary" type="submit">Zarezerwuj</button>
+            </div>
+            <p class="form-status" id="booking-status" role="status"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
